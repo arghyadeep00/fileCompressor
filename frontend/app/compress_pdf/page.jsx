@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Progress } from "../../components/ui/progress";
+import { Progress } from "@/components/ui/progress";
 import axios from "axios";
 
 const CompressPdf = () => {

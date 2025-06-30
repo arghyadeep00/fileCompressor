@@ -2,7 +2,7 @@ import React from 'react'
 
 const CompressImage = () => {
   return (
-    <div>CompressImage</div>
+    <div className='text-center'>⚠ CompressImage page under development mode </div>
   )
 }
 

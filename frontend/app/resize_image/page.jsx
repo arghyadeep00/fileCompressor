@@ -2,7 +2,7 @@ import React from 'react'
 
 const ResizeImage = () => {
   return (
-    <div>ResizeImage</div>
+    <div className='text-center'>⚠ ResizeImage is under development mode</div>
   )
 }
 
