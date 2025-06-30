@@ -68,8 +68,8 @@ const CompressPdf = () => {
       {!response ? (
         <>
           <div className="mt-20 flex gap-5 flex-col items-center justify-center w-full">
-            <h1 className="font-bold text-4xl">Compress PDF file</h1>
-            <p className="text-2xl">
+            <h1 className="font-bold text-[4rem] text-center">Compress PDF file</h1>
+            <p className="text-2xl text-center px-3">
               Reduce file size while optimizing for maximal PDF quality.
             </p>
             <label
