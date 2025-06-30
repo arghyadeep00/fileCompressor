@@ -10,7 +10,8 @@ const CompressPdf = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [response, setResponse] = useState();
   const backendUrl = "https://filecompressor-nmik.onrender.com"; // https://filecompressor-nmik.onrender.com/
-  
+  // const backendUrl = "http://localhost:4001";
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
@@ -68,7 +69,9 @@ const CompressPdf = () => {
       {!response ? (
         <>
           <div className="mt-20 flex gap-5 flex-col items-center justify-center w-full">
-            <h1 className="font-bold text-[4rem] text-center">Compress PDF file</h1>
+            <h1 className="font-bold text-[4rem] text-center">
+              Compress PDF file
+            </h1>
             <p className="text-2xl text-center px-3">
               Reduce file size while optimizing for maximal PDF quality.
             </p>
@@ -99,9 +102,9 @@ const CompressPdf = () => {
           </div>
         </>
       ) : (
-        <div className="w-full h-[85vh] flex">
-          <div className="left w-1/2 flex gap-3 flex-col items-center">
-            <div className="box border w-1/2 h-full">
+        <div className="w-full flex flex-col items-center gap-5 justify-center sm:flex-row">
+          <div className="w-full sm:w-1/2 flex gap-3 flex-col items-center">
+            <div className="w-10/12 border sm:border sm:w-1/2 h-[25rem]">
               {pdfUrl ? (
                 <iframe
                   src={pdfUrl + "#toolbar=0"}
@@ -113,18 +116,21 @@ const CompressPdf = () => {
               )}
             </div>
           </div>
-          <div className="right w-1/2 flex flex-col items-start gap-3 ">
+          <div className="w-full px-8 sm:w-1/2 flex flex-col items-start gap-3 ">
             <p>{pdfFile.name}</p>
+            {/* <p>Hello.pdf</p> */}
             <p className="text-xl text-gray-300 bg-gray-900 px-4 py-1 rounded-sm">
               Original file size: {(pdfFile.size / (1024 * 1024)).toFixed(2)}MB{" "}
+              {/* Original file size: 122MB{" "} */}
             </p>
             <p className="text-xl text-gray-300 bg-gray-900 px-4 py-1 rounded-sm">
               After compressed file size:{" "}
               {(response.data.fileSize / (1024 * 1024)).toFixed(2)}MB{" "}
+              {/* {12}MB{" "} */}
             </p>
 
             <button
-              className="p-2 rounded-md mt-4 cursor-pointer bg-green-500 text-gray-200 text-2xl w-1/2 font-medium hover:bg-green-600"
+              className="w-full p-3 sm:p-2 sm:w-1/2 rounded-md mt-4 cursor-pointer bg-green-500 text-gray-200 text-2xl  font-medium hover:bg-green-600"
               onClick={fileDownload}
             >
               Download Compressed PDF

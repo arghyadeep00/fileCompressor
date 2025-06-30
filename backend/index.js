@@ -8,6 +8,7 @@ const PORT = 4001;
 
 app.use(
   cors({
+    // origin: "*",
     origin: "https://file-compressor-six.vercel.app",
   })
 );
@@ -18,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", pdfCompressRouter);
-app.use('/api',downloadRoute)
+app.use("/api", downloadRoute);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
