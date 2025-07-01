@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FileDown, ImageIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -17,14 +18,18 @@ export default function HomePage() {
           Compress PDF and image files, resize images, and optimize for sharing — all in one simple tool.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <Button size="lg" className="gap-2">
+          <Link href={"/compress_pdf"} >
+          <Button size="lg" className="gap-2 cursor-pointer">
             <FileDown size={18} />
             Compress PDF
           </Button>
-          <Button size="lg" variant="secondary" className="gap-2">
+          </Link>
+          <Link href={"/resize_image"}>
+          <Button size="lg" variant="secondary" className="gap-2 cursor-pointer">
             <ImageIcon size={18} />
             Resize Image
           </Button>
+          </Link>
         </div>
       </div>
 
