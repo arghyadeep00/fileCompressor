@@ -2,21 +2,52 @@
 import React, { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { Progress } from "@/components/ui/progress";
+import axios from "axios";
 
 const CompressImage = () => {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [quality, setQuality] = useState(50);
+  const [uploadResponse, setUploadResponse] = useState(false);
   const backendUrl = "http://localhost:4001";
+  const handleOnImageUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+    }
+  };
+  const imageUploadBtnClicked = async () => {
+    const formData = new FormData();
+    formData.append("image", image);
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/image_compress`,
+        formData,
+        {
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percent);
+          },
+        }
+      );
+      setProgress(0);
+      setUploadResponse(response.data.success);
+    } catch (error) {
+      alert("Image upload faild");
+    }
+  };
   return (
     <>
-      {!false ? (
+      {!uploadResponse ? (
         <>
           <div className="px-8 w-full flex flex-col items-center  justify-center  sm:items-start sm:flex-row sm:gap-5">
             <label htmlFor="image">
-              <div className="w-50 h-50 border rounded-sm flex justify-center items-center relative overflow-hidden gap-2 cursor-pointer">
-                <FaCloudUploadAlt />
-                <p>Upload image</p>
+              <div className="w-50 h-50 border rounded-sm flex flex-col justify-center items-center relative overflow-hidden gap-5 cursor-pointer">
+                <FaCloudUploadAlt className="text-xl" />
+                <p className="px-2 text-center">Click here to Upload Image</p>
                 {image && (
                   <img
                     src={URL.createObjectURL(image)}
@@ -32,16 +63,23 @@ const CompressImage = () => {
               className="hidden"
               id="image"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={handleOnImageUpload}
             />
             {image && (
               <div className="flex flex-col gap-2">
                 <span className="mt-5">{image.name}</span>
                 <span>File Size: {(image.size / 1024).toFixed(2)} KB</span>
-                <button className="px-4 py-1 bg-green-500 rounded-sm cursor-pointer">
+                <button
+                  className="px-4 py-1 bg-green-600 rounded-sm cursor-pointer hover:bg-green-500 duration-200"
+                  onClick={imageUploadBtnClicked}
+                >
                   Upload Image
                 </button>
-                <Progress className={"mt-7"} value={40} />
+                {progress ? (
+                  <Progress className={"mt-7"} value={progress} />
+                ) : (
+                  <></>
+                )}
               </div>
             )}
             <h1></h1>
@@ -93,7 +131,7 @@ const CompressImage = () => {
               defaultValue={quality}
               min={10}
               id="range"
-              onChange={(e) => setQuality(e.target.value)}
+              onChange={(e) => setQuality(Number(e.target.value))}
             />
             <button className="w-1/2 mt-3 py-2 rounded-sm bg-green-600 text-xl font-bold cursor-pointer hover:bg-green-500 duration-200 ease-in">
               Apply

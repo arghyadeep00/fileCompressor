@@ -32,4 +32,4 @@ const pdf_compress = async (req, res) => {
   }
 };
 
-export { pdf_compress };
+export default pdf_compress;
