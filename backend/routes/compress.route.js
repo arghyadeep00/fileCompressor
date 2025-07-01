@@ -36,6 +36,6 @@ compressRouter.post("/pdf_compress", upload.single("pdf"), pdf_compress);
 // Image routes
 compressRouter.post("/image_upload", upload.single("image"), image_upload);
 compressRouter.post("/image_compress", image_compress);
-compressRouter.post("/image_download", image_download);
+compressRouter.get("/image_download", image_download);
 
 export { compressRouter };

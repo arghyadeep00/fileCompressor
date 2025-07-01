@@ -11,7 +11,7 @@ const CompressImage = () => {
   const [uploadResponse, setUploadResponse] = useState(false);
   const [compressedImage, setCompressedImage] = useState();
   const [loading, setLoading] = useState(false);
-  const [compressedSize,setCompressedSize]=useState();
+  const [compressedSize, setCompressedSize] = useState();
 
   const compressedImageUrl = useMemo(() => {
     return compressedImage ? URL.createObjectURL(compressedImage) : "";
@@ -21,7 +21,7 @@ const CompressImage = () => {
 
   const handleOnImageUpload = (e) => {
     const file = e.target.files[0];
-
+    console.log(file)
     if (file && file.type.startsWith("image/")) {
       setImage(file);
     }
@@ -58,7 +58,7 @@ const CompressImage = () => {
         quality: quality,
       });
       const data = response.data;
-      setCompressedSize(data.fileSize)
+      setCompressedSize(data.fileSize);
       const blob = new Blob(
         [Uint8Array.from(atob(data.image), (c) => c.charCodeAt(0))],
         {
@@ -73,6 +73,25 @@ const CompressImage = () => {
       setCompressedImage(file);
     } catch (error) {
       alert("Image compress faild");
+    }
+  };
+
+  const downloadBtnClick = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/image_download`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data]);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = image.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      alert("Download Faild");
     }
   };
 
@@ -183,7 +202,10 @@ const CompressImage = () => {
 
               {/* Download and File Info */}
               <div className="w-full flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <button className="w-full sm:w-1/2 py-2 cursor-pointer bg-blue-600 rounded-md font-semibold hover:bg-blue-500 transition">
+                <button
+                  className="w-full sm:w-1/2 py-2 cursor-pointer bg-blue-600 rounded-md font-semibold hover:bg-blue-500 transition"
+                  onClick={downloadBtnClick}
+                >
                   Download Image
                 </button>
 

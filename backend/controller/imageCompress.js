@@ -8,15 +8,6 @@ const __dirname = path.dirname(__filename);
 
 let imageFile = {};
 
-/*fieldname: 'image',
-  originalname: 'download.jpeg',
-  encoding: '7bit',
-  mimetype: 'image/jpeg',
-  destination: 'uploads/',
-  filename: 'image-1751366290410-42409047.jpeg',
-  path: 'uploads\\image-1751366290410-42409047.jpeg',
-  size: 48589 */
-
 const image_upload = async (req, res) => {
   imageFile = req.file;
 
@@ -67,6 +58,17 @@ const image_compress = async (req, res) => {
   }
 };
 
-const image_download = async (req, res) => {};
+const image_download = async (req, res) => {
+  const filePath = path.join(__dirname, "../uploads/" + imageFile.filename);
+ 
+  res.download(filePath, imageFile.originalname, (err) => {
+    if (err) {
+      res.status(400).json({
+        success: false,
+        message: "download faild",
+      });
+    }
+  });
+};
 
 export { image_upload, image_compress, image_download };
