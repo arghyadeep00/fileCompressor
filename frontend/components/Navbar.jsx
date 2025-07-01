@@ -47,7 +47,7 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <div className="md:hidden flex items-center relative">
+        <div className="sm:hidden flex items-center relative">
           <button
             className="p-1 bg-white rounded-full shadow hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Open menu"
