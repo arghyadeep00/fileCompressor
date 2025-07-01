@@ -1,6 +1,10 @@
 import { Router } from "express";
 import pdf_compress from "../controller/pdfCompress.js";
-import image_compress from "../controller/imageCompress.js";
+import {
+  image_upload,
+  image_compress,
+  image_download,
+} from "../controller/imageCompress.js";
 import multer from "multer";
 import fs from "fs";
 const compressRouter = Router();
@@ -26,8 +30,12 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
+// pdf routes
 compressRouter.post("/pdf_compress", upload.single("pdf"), pdf_compress);
-compressRouter.post("/image_compress", upload.single("image"), image_compress);
 
-export default compressRouter;
+// Image routes
+compressRouter.post("/image_upload", upload.single("image"), image_upload);
+compressRouter.post("/image_compress", image_compress);
+compressRouter.post("/image_download", image_download);
+
+export { compressRouter };

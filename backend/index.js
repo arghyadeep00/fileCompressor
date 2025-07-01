@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import compressRouter from "./routes/compress.route.js";
+import {compressRouter} from "./routes/compress.route.js";
 import cors from "cors";
 import downloadRoute from "./routes/downloadFile.route.js";
 const app = express();

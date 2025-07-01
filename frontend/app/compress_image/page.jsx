@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { Progress } from "@/components/ui/progress";
 import axios from "axios";
@@ -7,9 +7,17 @@ import axios from "axios";
 const CompressImage = () => {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [quality, setQuality] = useState(50);
+  const [quality, setQuality] = useState(80);
   const [uploadResponse, setUploadResponse] = useState(false);
+  const [compressedImage, setCompressedImage] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const compressedImageUrl = useMemo(() => {
+    return compressedImage ? URL.createObjectURL(compressedImage) : "";
+  }, [compressedImage]);
+
   const backendUrl = "http://localhost:4001";
+
   const handleOnImageUpload = (e) => {
     const file = e.target.files[0];
 
@@ -17,12 +25,13 @@ const CompressImage = () => {
       setImage(file);
     }
   };
-  const imageUploadBtnClicked = async () => {
+  // route for image upload to the server
+  const imageUploadBtnClick = async () => {
     const formData = new FormData();
     formData.append("image", image);
     try {
       const response = await axios.post(
-        `${backendUrl}/api/image_compress`,
+        `${backendUrl}/api/image_upload`,
         formData,
         {
           onUploadProgress: (progressEvent) => {
@@ -39,9 +48,36 @@ const CompressImage = () => {
       alert("Image upload faild");
     }
   };
+
+  // route for image compress
+  const compressBtnClick = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${backendUrl}/api/image_compress`, {
+        quality: quality,
+      });
+      const data = response.data;
+      const blob = new Blob(
+        [Uint8Array.from(atob(data.image), (c) => c.charCodeAt(0))],
+        {
+          type: data.mimeType,
+        }
+      );
+      const file = new File([blob], data.filename, {
+        type: blob.type,
+        lastModified: Date.now(),
+      });
+      setLoading(false);
+      setCompressedImage(file);
+    } catch (error) {
+      alert("Image compress faild");
+      console.log(error);
+    }
+  };
+
   return (
     <>
-      {!uploadResponse ? (
+      {uploadResponse ? (
         <>
           <div className="px-8 w-full flex flex-col items-center  justify-center  sm:items-start sm:flex-row sm:gap-5">
             <label htmlFor="image">
@@ -71,7 +107,7 @@ const CompressImage = () => {
                 <span>File Size: {(image.size / 1024).toFixed(2)} KB</span>
                 <button
                   className="px-4 py-1 bg-green-600 rounded-sm cursor-pointer hover:bg-green-500 duration-200"
-                  onClick={imageUploadBtnClicked}
+                  onClick={imageUploadBtnClick}
                 >
                   Upload Image
                 </button>
@@ -97,11 +133,11 @@ const CompressImage = () => {
                 Original Image
               </h2>
               <div className="sm:w-1/2 w-[50%] aspect-square bg-black border border-gray-400 rounded-xl shadow-lg overflow-hidden relative">
-                <img
-                  src="./bird.jpg"
+                {/* <img
+                  src={URL.createObjectURL(image)}
                   alt="Original"
                   className="absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-in-out"
-                />
+                /> */}
               </div>
             </div>
 
@@ -111,12 +147,23 @@ const CompressImage = () => {
                 Compressed Image
               </h2>
               <div className="sm:w-1/2 w-[50%] aspect-square bg-black border border-gray-400 rounded-xl shadow-lg overflow-hidden relative">
-                <img
-                  src="./bird.jpg"
-                  alt="Compressed"
-                  className="absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-in-out"
-                />
+                {loading ? (
+                  <p className="text-center mt-10">Loading....</p>
+                ) : (
+              
+                  // <img
+                  //   src={
+                  //     compressedImageUrl
+                  //       ? compressedImageUrl
+                  //       : URL.createObjectURL(image)
+                  //   }
+                  //   alt="Compressed"
+                  //   className="absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-in-out"
+                  // />
+                  <></>
+                )}
               </div>
+              
             </div>
           </div>
           <div className="w-full px-4 flex flex-col items-center mt-5 gap-3">
@@ -125,17 +172,21 @@ const CompressImage = () => {
             </label>
             <input
               type="range"
-              className="w-1/2"
+              className="w-1/2 cursor-pointer"
               name=""
               max={100}
-              defaultValue={quality}
+              value={quality}
               min={10}
               id="range"
               onChange={(e) => setQuality(Number(e.target.value))}
             />
-            <button className="w-1/2 mt-3 py-2 rounded-sm bg-green-600 text-xl font-bold cursor-pointer hover:bg-green-500 duration-200 ease-in">
+            <button
+              className="w-1/2 mt-3 py-1 rounded-sm bg-green-600 text-xl font-bold cursor-pointer hover:bg-green-500 duration-200 ease-in"
+              onClick={compressBtnClick}
+            >
               Apply
             </button>
+            
           </div>
         </>
       )}
