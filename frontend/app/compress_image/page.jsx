@@ -17,7 +17,8 @@ const CompressImage = () => {
     return compressedImage ? URL.createObjectURL(compressedImage) : "";
   }, [compressedImage]);
 
-  const backendUrl = "http://localhost:4001";
+  const backendUrl = "https://filecompressor-nmik.onrender.com";
+  // const backendUrl = "http://localhost:4001";
 
   const handleOnImageUpload = (e) => {
     const file = e.target.files[0];

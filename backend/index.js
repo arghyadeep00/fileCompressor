@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import {compressRouter} from "./routes/compress.route.js";
+import { compressRouter } from "./routes/compress.route.js";
 import cors from "cors";
 import downloadRoute from "./routes/downloadFile.route.js";
 const app = express();
@@ -8,8 +8,8 @@ const PORT = 4001;
 
 app.use(
   cors({
-    origin: "*",
-    // origin: "https://file-compressor-six.vercel.app",
+    // origin: "*",
+    origin: "https://file-compressor-six.vercel.app",
   })
 );
 app.use(express.json());
