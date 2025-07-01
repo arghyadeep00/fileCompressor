@@ -60,7 +60,7 @@ const image_compress = async (req, res) => {
 
 const image_download = async (req, res) => {
   const filePath = path.join(__dirname, "../uploads/" + imageFile.filename);
- 
+
   res.download(filePath, imageFile.originalname, (err) => {
     if (err) {
       res.status(400).json({
@@ -68,6 +68,13 @@ const image_download = async (req, res) => {
         message: "download faild",
       });
     }
+    fs.unlink(filePath, (unlinkErr) => {
+      if (unlinkErr) {
+        console.error("Failed to delete file:", unlinkErr);
+      } else {
+        console.log("File deleted from server:", imageFile.filename);
+      }
+    });
   });
 };
 
