@@ -61,9 +61,7 @@ const CompressPdf = () => {
     link.click();
     link.parentNode.removeChild(link);
   };
-  useEffect(() => {
-    console.log(pdfFile);
-  });
+  
   return (
     <>
       {!response ? (
