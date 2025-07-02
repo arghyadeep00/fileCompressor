@@ -1,8 +1,8 @@
 import express from "express";
-import multer from "multer";
 import { compressRouter } from "./routes/compress.route.js";
 import cors from "cors";
 import downloadRoute from "./routes/downloadFile.route.js";
+import resizeRoute from "./routes/resize.route.js";
 const app = express();
 const PORT = 4001;
 
@@ -20,6 +20,8 @@ app.get("/", (req, res) => {
 
 app.use("/api", compressRouter);
 app.use("/api", downloadRoute);
+app.use("/api", resizeRoute);
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

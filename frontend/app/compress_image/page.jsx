@@ -22,7 +22,7 @@ const CompressImage = () => {
 
   const handleOnImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file)
+ 
     if (file && file.type.startsWith("image/")) {
       setImage(file);
     }
@@ -33,7 +33,7 @@ const CompressImage = () => {
     formData.append("image", image);
     try {
       const response = await axios.post(
-        `${backendUrl}/api/image_upload`,
+        `${backendUrl}/api/compress/image_upload`,
         formData,
         {
           onUploadProgress: (progressEvent) => {
@@ -55,7 +55,7 @@ const CompressImage = () => {
   const compressBtnClick = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${backendUrl}/api/image_compress`, {
+      const response = await axios.post(`${backendUrl}/api/compress/image_compress`, {
         quality: quality,
       });
       const data = response.data;
@@ -79,7 +79,7 @@ const CompressImage = () => {
 
   const downloadBtnClick = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/image_download`, {
+      const response = await axios.get(`${backendUrl}/api/compress/image_download`, {
         responseType: "blob",
       });
       const blob = new Blob([response.data]);
