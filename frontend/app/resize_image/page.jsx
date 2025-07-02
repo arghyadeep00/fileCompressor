@@ -1,9 +1,34 @@
-import React from "react";
+"use client";
+import "../../public/css/public.css";
+import React, { useEffect, useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 const ResizeImage = () => {
+  const formData = {
+    width: "",
+    height: "",
+    unit: "",
+    quality: "",
+  };
+  const [switchStatus, setSwitchStatus] = useState(false);
+  const [data, setData] = useState(formData);
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+
+    if (!switchStatus && name === "width") {
+      setData((prev) => ({ ...prev, width: value, height: value }));
+    } else if (!switchStatus && name === "height") {
+      setData((prev) => ({ ...prev, width: value, height: value }));
+    } else {
+      setData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   return (
     <div className="w-full">
       {!true ? (
@@ -25,7 +50,8 @@ const ResizeImage = () => {
           {/* Left Image Preview Section */}
           <div className="sm:w-[35%] h-full flex flex-col items-center justify-center rounded-2xl bg-gray-900 shadow-md p-4">
             <div className="w-[50%] aspect-square border-2 border-dashed rounded-2xl flex items-center justify-center bg-black">
-              <span className="text-gray-400">Image Preview</span>
+              {/* <span className="text-gray-400">Image Preview</span> */}
+              <Skeleton className="h-[100%] w-[100%] bg-gray-800" />
             </div>
             <div className="mt-4 text-center">
               <p className="text-lg font-medium">file_name.jpg</p>
@@ -51,6 +77,9 @@ const ResizeImage = () => {
                     className="w-full sm:w-32 border rounded px-2 py-1"
                     placeholder="Width"
                     id="width"
+                    name="width"
+                    value={data.width}
+                    onChange={onChangeHandler}
                   />
                 </div>
 
@@ -64,8 +93,10 @@ const ResizeImage = () => {
                     className="w-full sm:w-32 border rounded px-2 py-1"
                     placeholder="Height"
                     id="height"
-                    disabled={true}
-                    value={20}
+                    // disabled={!switchStatus}
+                    name="height"
+                    value={data.height}
+                    onChange={onChangeHandler}
                   />
                 </div>
 
@@ -77,6 +108,9 @@ const ResizeImage = () => {
                   <select
                     id="unit"
                     className="w-full sm:w-40 border rounded px-2 p-1 text-gray-500"
+                    name="unit"
+                    onChange={onChangeHandler}
+                    value={data.unit}
                   >
                     <option value="percent">Percent</option>
                     <option value="pixel">Pixel</option>
@@ -94,15 +128,31 @@ const ResizeImage = () => {
                     type="number"
                     id="quality"
                     className="w-full sm:w-32 border rounded px-2 py-1"
-                    placeholder="0 - 100"
+                    placeholder="0 - 100 %"
+                    name="quality"
+                    value={data.quality}
+                    onChange={onChangeHandler}
                   />
                 </div>
               </div>
-              <div className="mt-10 space-y-6">
+              <div className="mt-10 space-y-6 flex flex-col justify-between">
                 <div className="flex items-center space-x-2">
                   <Label htmlFor="width-height">Custom width & Height</Label>
-                  <Switch id="width-height" />
+                  <Checkbox
+                    id="width-height"
+                    onCheckedChange={(e) => setSwitchStatus(e)}
+                    checked={switchStatus}
+                  />
                 </div>
+
+                <Button
+                  className={
+                    "w-full cursor-pointer py-2 bg-green-600 hover:bg-green-700 duration-200"
+                  }
+                  disabled={false}
+                >
+                  Download Image
+                </Button>
               </div>
             </div>
           </div>
