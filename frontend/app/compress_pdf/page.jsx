@@ -8,8 +8,8 @@ const CompressPdf = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [response, setResponse] = useState(false);
-  const backendUrl = "https://filecompressor-nmik.onrender.com"; // https://filecompressor-nmik.onrender.com/
-  // const backendUrl = "http://localhost:4001";
+  // const backendUrl = "https://filecompressor-nmik.onrender.com"; // https://filecompressor-nmik.onrender.com/
+  const backendUrl = "http://localhost:4001";
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
