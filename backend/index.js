@@ -8,8 +8,8 @@ const PORT = 4001;
 
 app.use(
   cors({
-    origin: "*",
-    // origin: "https://file-compressor-six.vercel.app",
+    // origin: "*",
+    origin: "https://file-compressor-six.vercel.app",
   })
 );
 app.use(express.json());

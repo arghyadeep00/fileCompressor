@@ -1,6 +1,6 @@
 "use client";
 import "../../public/css/public.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 const ResizeImage = () => {
-  const backendUrl = "http://localhost:4001";
+  // const backendUrl = "http://localhost:4001";
+  const backendUrl = "https://filecompressor-nmik.onrender.com";
   const formData = {
     width: "",
     height: "",
@@ -140,9 +141,7 @@ const ResizeImage = () => {
           {/* Left Image Preview Section */}
           <div className="sm:w-[35%] h-full flex flex-col items-center justify-center rounded-2xl bg-gray-900 shadow-md p-4">
             <div className="w-[50%] aspect-square border-2 border-dashed rounded-2xl flex items-center justify-center relative overflow-hidden bg-black">
-              {/* <span className="text-gray-400">Image Preview</span> */}
-              {/* <Skeleton className="h-[100%] w-[100%] bg-gray-800" /> */}
-              {image ? (
+              {imageUrl ? (
                 <img
                   src={imageUrl}
                   className="absolute inset-0 w-full h-full object-contain rounded-sm z-10"
