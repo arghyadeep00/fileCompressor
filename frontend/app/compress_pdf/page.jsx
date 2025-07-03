@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import backendUrl from "@/config/server";
 import axios from "axios";
 
 const CompressPdf = () => {
@@ -8,9 +9,7 @@ const CompressPdf = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [response, setResponse] = useState(false);
-  const backendUrl = "https://filecompressor-nmik.onrender.com"; // https://filecompressor-nmik.onrender.com/
-  // const backendUrl = "http://localhost:4001";
-
+  
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
@@ -25,7 +24,7 @@ const CompressPdf = () => {
       formData.append("pdf", file);
 
       const response = await axios.post(
-        `${backendUrl}/api/pdf_compress`,
+        `${backendUrl}/api/pdf/pdf_compress`,
         formData,
         {
           onUploadProgress: (progressEvent) => {
@@ -44,7 +43,7 @@ const CompressPdf = () => {
   };
 
   const fileDownload = async () => {
-    const response = await axios.get(`${backendUrl}/api/download_pdf`, {
+    const response = await axios.get(`${backendUrl}/api/pdf/download_pdf`, {
       responseType: "blob",
       headers: {
         Accept: "application/pdf",

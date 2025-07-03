@@ -1,6 +1,7 @@
 "use client";
 import "../../public/css/public.css";
 import React, { useState } from "react";
+import backendUrl from "@/config/server";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -9,8 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 const ResizeImage = () => {
-  // const backendUrl = "http://localhost:4001";
-  const backendUrl = "https://filecompressor-nmik.onrender.com";
+  
   const formData = {
     width: "",
     height: "",

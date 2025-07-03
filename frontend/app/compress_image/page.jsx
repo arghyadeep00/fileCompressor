@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { Progress } from "@/components/ui/progress";
+import backendUrl from "@/config/server";
 import axios from "axios";
 
 const CompressImage = () => {
@@ -17,9 +18,7 @@ const CompressImage = () => {
     return compressedImage ? URL.createObjectURL(compressedImage) : "";
   }, [compressedImage]);
 
-  const backendUrl = "https://filecompressor-nmik.onrender.com";
-  // const backendUrl = "http://localhost:4001";
-
+  
   const handleOnImageUpload = (e) => {
     const file = e.target.files[0];
  

@@ -1,5 +1,10 @@
 import { PDFDocument } from "pdf-lib";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const pdf_compress = async (req, res) => {
   try {
@@ -32,4 +37,20 @@ const pdf_compress = async (req, res) => {
   }
 };
 
-export default pdf_compress;
+const download_pdf = async (req, res) => {
+  const file = path.join(__dirname, "../pdf/compress.pdf");
+  try {
+    res.download(file, "compressed.pdf", (err) => {
+      if (err) {
+        console.error("Error sending file:", err);
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Download failed" });
+        }
+      }
+    });
+  } catch (error) {
+    console.log("catch error", error);
+  }
+};
+
+export { pdf_compress, download_pdf };
